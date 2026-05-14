@@ -585,7 +585,8 @@ async function doRegister() {
   if(CACHE.users.find(u=>u.email===email)){ showAuthErr('Энэ и-мэйл бүртгэлтэй байна.'); return; }
   let coachId = null;
   if(selRoleVal==='student'){
-    const code = (document.getElementById('rc').value||'').trim().toUpperCase();
+    const rcEl = document.getElementById('rc');
+    const code = rcEl ? rcEl.value.trim().toUpperCase() : '';
     if(!code){ showAuthErr('Багшийн урилгын кодыг оруулна уу.'); return; }
     const coach = CACHE.users.find(u=>u.role==='coach'&&u.inviteCode===code);
     if(!coach){ showAuthErr('Урилгын код буруу байна. Багшаасаа асуугтун.'); return; }
