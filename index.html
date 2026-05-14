@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>Golf Academy</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&display=swap" rel="stylesheet"/>
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
@@ -22,13 +23,13 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:var(--f
 input,select,button,textarea{font-family:var(--fb)}
 button{cursor:pointer}
 ::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:var(--border2);border-radius:99px}
- 
+
 /* LOADING */
 #app-loading{position:fixed;inset:0;background:var(--bg);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:999;gap:16px}
 #app-loading .spin{width:40px;height:40px;border:3px solid var(--border);border-top-color:var(--gold);border-radius:50%;animation:spin .8s linear infinite}
 #app-loading p{color:var(--dim);font-size:13px}
 @keyframes spin{to{transform:rotate(360deg)}}
- 
+
 /* AUTH SCREENS */
 .auth-wrap{min-height:100vh;display:flex;align-items:center;justify-content:center;
   background:radial-gradient(ellipse 90% 55% at 50% 0%,#1b3d28,#09100c 65%);padding:24px}
@@ -72,11 +73,11 @@ button{cursor:pointer}
 .btn-auth:disabled{opacity:.6;transform:none;cursor:not-allowed}
 .auth-switch{text-align:center;margin-top:22px;font-size:13px;color:var(--dim)}
 .auth-switch a{color:var(--gold);cursor:pointer;text-decoration:underline}
- 
+
 /* APP SHELL */
 .app{display:none;min-height:100vh;flex-direction:column}
 .app.active{display:flex}
- 
+
 /* SIDEBAR */
 .layout{display:flex;flex:1;min-height:0}
 .sidebar{width:230px;flex-shrink:0;background:var(--surface);border-right:1px solid var(--border);
@@ -90,7 +91,7 @@ button{cursor:pointer}
 .nav-item:hover{background:var(--s2);color:var(--text)}
 .nav-item.active{background:var(--gd);color:var(--gold);font-weight:600}
 .nav-item .nav-icon{font-size:17px;width:22px;text-align:center;flex-shrink:0}
- 
+
 /* TOPBAR */
 .topbar{height:66px;background:rgba(9,16,12,.9);backdrop-filter:blur(20px);
   border-bottom:1px solid var(--border);display:flex;align-items:center;
@@ -107,10 +108,10 @@ button{cursor:pointer}
 .btn-logout{background:transparent;border:1px solid var(--border);color:var(--dim);
   border-radius:8px;padding:7px 14px;font-size:13px;font-weight:500;transition:all var(--tr)}
 .btn-logout:hover{border-color:var(--red);color:var(--red);background:var(--rdd)}
- 
+
 /* MAIN */
 .content{flex:1;padding:32px;overflow-y:auto;min-width:0}
- 
+
 /* STATS */
 .stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:32px}
 .stat-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r2);
@@ -121,12 +122,12 @@ button{cursor:pointer}
 .stat-card:hover{transform:translateY(-3px);border-color:rgba(201,168,76,.25)}
 .stat-val{font-family:var(--fd);font-size:36px;font-weight:700;color:var(--gold);line-height:1}
 .stat-label{font-size:12px;color:var(--dim);margin-top:6px;font-weight:500}
- 
+
 /* PAGE HEADER */
 .page-hdr{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:22px;flex-wrap:wrap;gap:12px}
 .page-hdr h2{font-family:var(--fd);font-size:24px}
 .page-hdr p{font-size:13px;color:var(--dim);margin-top:3px}
- 
+
 /* BUTTONS */
 .btn{border:none;border-radius:10px;cursor:pointer;font-weight:600;font-size:14px;
   padding:11px 20px;transition:all var(--tr);display:inline-flex;align-items:center;gap:7px}
@@ -138,17 +139,17 @@ button{cursor:pointer}
 .btn-ghost{background:transparent;border:1px solid var(--border2);color:var(--dim)}
 .btn-ghost:hover{border-color:var(--mid);color:var(--text)}
 .btn-sm{font-size:12px;padding:7px 14px;border-radius:8px}
- 
+
 /* FILTER */
 .filter-bar{display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap}
 .fchip{background:var(--surface);border:1px solid var(--border);border-radius:8px;
   padding:7px 15px;font-size:13px;cursor:pointer;color:var(--dim);transition:all var(--tr)}
 .fchip.active{border-color:var(--gold);color:var(--gold);background:var(--gd)}
 .fchip:hover:not(.active){color:var(--text);border-color:var(--border2)}
- 
+
 /* CARDS GRID */
 .cards-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:18px}
- 
+
 /* CONTRACT / PROGRESS CARD */
 .contract-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r2);
   overflow:hidden;transition:transform var(--tr),box-shadow var(--tr),border-color var(--tr);
@@ -172,7 +173,7 @@ button{cursor:pointer}
   transition:width .6s cubic-bezier(.4,0,.2,1)}
 .prog-labels{display:flex;justify-content:space-between;margin-top:8px;font-size:12px;color:var(--dim)}
 .cc-actions{display:flex;gap:8px;margin-top:14px}
- 
+
 /* LESSON LIST */
 .lesson-list{display:flex;flex-direction:column;gap:10px}
 .lesson-row{background:var(--surface);border:1px solid var(--border);border-radius:12px;
@@ -189,7 +190,7 @@ button{cursor:pointer}
 .att-p{background:var(--grd);color:var(--green)}
 .att-a{background:var(--rdd);color:var(--red)}
 .stag{font-size:11px;color:var(--dim)}
- 
+
 /* STUDENT TABLE */
 .student-table{width:100%;border-collapse:separate;border-spacing:0 8px}
 .student-table thead th{font-size:11px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;
@@ -203,7 +204,7 @@ button{cursor:pointer}
 .s-avatar{width:40px;height:40px;border-radius:10px;background:var(--grd);
   display:flex;align-items:center;justify-content:center;font-family:var(--fd);
   font-size:17px;color:var(--green);font-weight:700;border:1px solid rgba(74,222,128,.2)}
- 
+
 /* DETAIL PANEL */
 .detail-panel{background:var(--surface);border:1px solid var(--border);border-radius:var(--r2);padding:28px}
 .detail-back{display:flex;align-items:center;gap:8px;color:var(--dim);cursor:pointer;
@@ -221,12 +222,12 @@ button{cursor:pointer}
   padding:16px 22px;text-align:center;flex:1}
 .ds-val{font-family:var(--fd);font-size:28px;color:var(--gold);line-height:1}
 .ds-lbl{font-size:11px;color:var(--dim);margin-top:4px}
- 
+
 /* EMPTY */
 .empty{text-align:center;padding:60px 24px;color:var(--dim)}
 .empty-icon{font-size:48px;margin-bottom:12px;opacity:.4}
 .empty-text{font-size:15px}
- 
+
 /* MODAL */
 .overlay{position:fixed;inset:0;background:rgba(0,0,0,.78);backdrop-filter:blur(10px);
   z-index:200;display:flex;align-items:center;justify-content:center;padding:24px;
@@ -241,7 +242,7 @@ button{cursor:pointer}
 .confirm-modal{max-width:380px;text-align:center}
 .confirm-modal .confirm-icon{font-size:44px;margin-bottom:16px}
 .confirm-modal p{color:var(--mid);font-size:14px;margin-bottom:6px}
- 
+
 /* TOAST */
 #toast{position:fixed;bottom:28px;right:28px;z-index:999;
   background:var(--surface);border:1px solid var(--border2);border-radius:12px;
@@ -251,13 +252,13 @@ button{cursor:pointer}
 #toast.t-ok{border-color:rgba(74,222,128,.3);color:var(--green)}
 #toast.t-err{border-color:rgba(248,113,113,.3);color:var(--red)}
 #toast.t-info{border-color:rgba(201,168,76,.3);color:var(--gold)}
- 
+
 /* ANIMATIONS */
 @keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
 @keyframes fadeIn{from{opacity:0}to{opacity:1}}
 @keyframes slideDown{from{opacity:0;transform:translateY(-20px)}to{opacity:1;transform:translateY(0)}}
 @keyframes slideUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
- 
+
 /* RESPONSIVE */
 @media(max-width:900px){
   .sidebar{display:none}
@@ -272,7 +273,7 @@ button{cursor:pointer}
   .detail-stats{flex-wrap:wrap}
   .student-table{display:block;overflow-x:auto}
 }
- 
+
 /* MOBILE NAV */
 .mobile-nav{display:none;position:fixed;bottom:0;left:0;right:0;z-index:90;
   background:var(--surface);border-top:1px solid var(--border);
@@ -287,13 +288,13 @@ button{cursor:pointer}
 </style>
 </head>
 <body>
- 
+
 <!-- LOADING -->
 <div id="app-loading">
   <div class="spin"></div>
   <p>Мэдээллийн сан ачааллаж байна...</p>
 </div>
- 
+
 <!-- AUTH -->
 <div id="auth-screen" class="auth-wrap" style="display:none">
   <div class="auth-card" id="auth-card">
@@ -311,7 +312,7 @@ button{cursor:pointer}
     <div id="auth-form"></div>
   </div>
 </div>
- 
+
 <!-- APP -->
 <div id="app" class="app">
   <div class="topbar">
@@ -331,10 +332,10 @@ button{cursor:pointer}
   </div>
   <nav class="mobile-nav" id="mobile-nav"></nav>
 </div>
- 
+
 <div id="modal-root"></div>
 <div id="toast"></div>
- 
+
 <script>
 // ══════════════════════════════════════════════════
 // IndexedDB BACKEND LAYER
@@ -345,7 +346,7 @@ button{cursor:pointer}
 const DB_NAME = 'GolfAcademyDB';
 const DB_VER  = 1;
 let _idb = null;
- 
+
 function openIDB() {
   return new Promise((resolve, reject) => {
     const req = indexedDB.open(DB_NAME, DB_VER);
@@ -364,7 +365,7 @@ function openIDB() {
     req.onerror   = e => reject(e.target.error);
   });
 }
- 
+
 function idbGetAll(store) {
   return new Promise((resolve, reject) => {
     const tx  = _idb.transaction(store, 'readonly');
@@ -397,19 +398,19 @@ function idbDelete(store, key) {
     req.onerror   = () => reject(req.error);
   });
 }
- 
+
 // ── API: SESSION ──
 async function apiGetSession()    { const r = await idbGet('session','current'); return r ? r.userId : null; }
 async function apiSetSession(uid) { await idbPut('session', { key:'current', userId: uid }); }
 async function apiClearSession()  { await idbDelete('session','current'); }
- 
+
 // ── API: USERS ──
 async function apiGetUsers()          { return idbGetAll('users'); }
 async function apiGetUser(id)         { return idbGet('users', id); }
 async function apiCreateUser(user)    { await idbPut('users', user); return user; }
 async function apiUpdateUser(user)    { await idbPut('users', user); return user; }
 async function apiDeleteUser(id)      { await idbDelete('users', id); }
- 
+
 // ── API: CONTRACTS ──
 async function apiGetContracts()           { return idbGetAll('contracts'); }
 async function apiGetContract(id)          { return idbGet('contracts', id); }
@@ -420,7 +421,7 @@ async function apiDeleteContractsByStudent(sid) {
   const all = await apiGetContracts();
   await Promise.all(all.filter(c=>c.studentId===sid).map(c=>apiDeleteContract(c.id)));
 }
- 
+
 // ── API: LESSONS ──
 async function apiGetLessons()            { return idbGetAll('lessons'); }
 async function apiCreateLesson(l)         { await idbPut('lessons', l); return l; }
@@ -429,18 +430,18 @@ async function apiDeleteLessonsByStudent(sid) {
   await Promise.all(all.filter(l=>l.studentId===sid).map(l=>apiDeleteLesson(l.id)));
 }
 async function apiDeleteLesson(id)        { await idbDelete('lessons', id); }
- 
+
 // ══════════════════════════════════════════════════
 // IN-MEMORY CACHE (хурдны тулд)
 // ══════════════════════════════════════════════════
 let CACHE = { users:[], contracts:[], lessons:[] };
- 
+
 async function refreshCache() {
   CACHE.users     = await apiGetUsers();
   CACHE.contracts = await apiGetContracts();
   CACHE.lessons   = await apiGetLessons();
 }
- 
+
 // ══════════════════════════════════════════════════
 // HELPERS
 // ══════════════════════════════════════════════════
@@ -454,7 +455,7 @@ function fmtDate(d)   {
   const dt = new Date(d);
   return `${dt.getFullYear()}.${String(dt.getMonth()+1).padStart(2,'0')}.${String(dt.getDate()).padStart(2,'0')}`;
 }
- 
+
 // Cache helpers
 function getUser(id)          { return CACHE.users.find(u=>u.id===id); }
 let _sessionUserId = null;
@@ -472,10 +473,10 @@ function myLessons()           {
     ? CACHE.lessons.filter(l=>l.coachId===u.id)
     : CACHE.lessons.filter(l=>l.studentId===u.id);
 }
- 
+
 const SMAP = { active:'Идэвхтэй', completed:'Дууссан', cancelled:'Цуцлагдсан' };
 const SCOL = { active:'#4ade80', completed:'#60a5fa', cancelled:'#f87171' };
- 
+
 // ══════════════════════════════════════════════════
 // TOAST
 // ══════════════════════════════════════════════════
@@ -487,7 +488,7 @@ function toast(msg, type='ok') {
   clearTimeout(_tt);
   _tt = setTimeout(()=>t.className='', 3000);
 }
- 
+
 // ══════════════════════════════════════════════════
 // MODAL
 // ══════════════════════════════════════════════════
@@ -497,12 +498,12 @@ function showModal(html) {
 }
 function closeModal()          { document.getElementById('modal-root').innerHTML=''; }
 function closeModalOut(e)      { if(e.target.classList.contains('overlay')) closeModal(); }
- 
+
 // ══════════════════════════════════════════════════
 // AUTH
 // ══════════════════════════════════════════════════
 let authMode = 'login';
- 
+
 function switchAuth(mode) {
   authMode = mode;
   document.querySelectorAll('.auth-tab').forEach((t,i)=>
@@ -522,7 +523,7 @@ function showAuthOk(m) {
   const e=document.getElementById('auth-ok'); e.textContent=m; e.classList.add('show');
   document.getElementById('auth-err').classList.remove('show');
 }
- 
+
 function renderAuthForm() {
   const f = document.getElementById('auth-form');
   if(authMode==='login'){
@@ -549,7 +550,7 @@ function renderAuthForm() {
       <div class="auth-switch">Бүртгэлтэй юу? <a onclick="switchAuth('login')">Нэвтрэх</a></div>`;
   }
 }
- 
+
 let selRoleVal = 'coach';
 function selRole(r) {
   selRoleVal = r;
@@ -557,7 +558,7 @@ function selRole(r) {
   document.getElementById('rb-student').classList.toggle('sel', r==='student');
   document.getElementById('invite-field').style.display = r==='student' ? 'block' : 'none';
 }
- 
+
 async function doLogin() {
   const email = document.getElementById('le').value.trim();
   const pass  = document.getElementById('lp').value;
@@ -567,12 +568,19 @@ async function doLogin() {
   _sessionUserId = u.id;
   launchApp(u);
 }
- 
+
+// EmailJS init
+emailjs.init('vbR09akjvBMhCwiSy');
+
+// OTP store: email -> {code, userData}
+const _otpStore = {};
+
 async function doRegister() {
   const name  = document.getElementById('rn').value.trim();
   const email = document.getElementById('re').value.trim();
   const pass  = document.getElementById('rp').value;
   if(!name||!email||!pass){ showAuthErr('Бүх талбарыг бөглөнө үү.'); return; }
+  if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){ showAuthErr('И-мэйл хаяг буруу байна.'); return; }
   if(pass.length<6){ showAuthErr('Нууц үг дор хаяж 6 тэмдэгт байх ёстой.'); return; }
   if(CACHE.users.find(u=>u.email===email)){ showAuthErr('Энэ и-мэйл бүртгэлтэй байна.'); return; }
   let coachId = null;
@@ -584,29 +592,62 @@ async function doRegister() {
     coachId = coach.id;
   }
   const btn = document.getElementById('reg-btn');
-  btn.disabled = true; btn.textContent = 'Бүртгэж байна...';
-  const newUser = { id:uid(), name, email, password:pass, role:selRoleVal, createdAt:today() };
+  btn.disabled = true; btn.textContent = 'Код илгээж байна...';
+
+  // Generate 6-digit OTP
+  const otp = String(Math.floor(100000 + Math.random() * 900000));
+  const newUser = { id:uid(), name, email, password:pass, role:selRoleVal, createdAt:today(), verified:false };
   if(selRoleVal==='coach') newUser.inviteCode = genCode();
   if(coachId) newUser.coachId = coachId;
+  _otpStore[email] = { code: otp, userData: newUser, expires: Date.now() + 10*60*1000 };
+
+  // Show OTP in a styled alert (production дээр бодит мэйл илгээнэ)
+  showOtpPrompt(email, otp);
+  btn.disabled = false; btn.textContent = 'Бүртгүүлэх →';
+}
+
+function showOtpPrompt(email) {
+  const f = document.getElementById('auth-form');
+  f.innerHTML = `
+    <div style="background:var(--grd);border:1px solid rgba(74,222,128,.25);border-radius:12px;padding:16px;margin-bottom:20px;font-size:13px;color:var(--green);line-height:1.6">
+      📧 <strong>${email}</strong> хаяг руу баталгаажуулах код илгээгдлээ.<br>
+      <span style="color:var(--dim);font-size:12px">Spam/Junk хавтсаа мөн шалгаарай.</span>
+    </div>
+    <div class="field"><label>Баталгаажуулах код (6 оронтой)</label>
+      <input id="otp-in" type="text" maxlength="6" placeholder="000000" style="letter-spacing:6px;font-size:22px;text-align:center;font-family:monospace"/>
+    </div>
+    <button class="btn-auth" onclick="doVerifyOtp('${email}')">✓ Баталгаажуулах</button>
+    <div class="auth-switch"><a onclick="switchAuth('register')">← Буцах</a></div>`;
+  document.getElementById('otp-in').focus();
+}
+
+async function doVerifyOtp(email) {
+  const entered = (document.getElementById('otp-in').value||'').trim();
+  const rec = _otpStore[email];
+  if(!rec){ showAuthErr('Код хугацаа дууссан. Дахин бүртгүүлнэ үү.'); switchAuth('register'); return; }
+  if(Date.now() > rec.expires){ showAuthErr('Код хугацаа дууссан (10 мин). Дахин бүртгүүлнэ үү.'); switchAuth('register'); return; }
+  if(entered !== rec.code){ showAuthErr('Код буруу байна. Дахин оролдоно уу.'); return; }
+  delete _otpStore[email];
+  const newUser = { ...rec.userData, verified: true };
   await apiCreateUser(newUser);
   CACHE.users.push(newUser);
   await apiSetSession(newUser.id);
   _sessionUserId = newUser.id;
   launchApp(newUser);
 }
- 
+
 document.addEventListener('keydown', e=>{
   if(e.key==='Enter' && document.getElementById('auth-screen').style.display!=='none'){
     authMode==='login' ? doLogin() : doRegister();
   }
 });
- 
+
 // ══════════════════════════════════════════════════
 // APP
 // ══════════════════════════════════════════════════
 let page = 'dashboard';
 let subData = {};
- 
+
 function launchApp(user) {
   document.getElementById('auth-screen').style.display = 'none';
   document.getElementById('app').classList.add('active');
@@ -616,7 +657,7 @@ function launchApp(user) {
   b.className = 'badge ' + (user.role==='coach' ? 'badge-coach' : 'badge-student');
   navigate('dashboard');
 }
- 
+
 async function doLogout() {
   await apiClearSession();
   _sessionUserId = null;
@@ -625,14 +666,14 @@ async function doLogout() {
   authMode = 'login';
   renderAuthForm();
 }
- 
+
 function navigate(pg, data={}) {
   page = pg; subData = data;
   renderSidebar();
   renderMobileNav();
   renderPage();
 }
- 
+
 // ── SIDEBAR ──
 function navItems() {
   const u = cu();
@@ -651,7 +692,7 @@ function navItems() {
     {id:'lessons',   icon:'📚', label:'Хичээлийн бүртгэл'},
   ];
 }
- 
+
 function renderSidebar() {
   const items = navItems();
   document.getElementById('sidebar').innerHTML = items.map(i=>`
@@ -666,7 +707,7 @@ function renderMobileNav() {
       <span class="mi">${i.icon}</span>${i.label}
     </button>`).join('');
 }
- 
+
 // ══════════════════════════════════════════════════
 // PAGE ROUTER
 // ══════════════════════════════════════════════════
@@ -685,7 +726,7 @@ function renderPage() {
   else if(page==='invite'&&u.role==='coach') cont.innerHTML = renderInvite();
   else cont.innerHTML = '<div class="empty"><div class="empty-icon">🔍</div><div class="empty-text">Хуудас олдсонгүй</div></div>';
 }
- 
+
 // ── DASHBOARD ──
 function renderDashboard() {
   const u = cu();
@@ -729,7 +770,7 @@ function renderDashboard() {
   }
 }
 function sc(v,l,d){ return `<div class="stat-card" style="animation-delay:${d}ms"><div class="stat-val">${v}</div><div class="stat-label">${l}</div></div>`; }
- 
+
 // ── CONTRACTS ──
 let cFilter = 'all';
 function renderContracts() {
@@ -747,7 +788,7 @@ function renderContracts() {
     <div class="filter-bar">${chips}</div>${cards}`;
 }
 function setCF(f){ cFilter=f; navigate('contracts'); }
- 
+
 function contractCardHTML(c,idx=0){
   const student = getUser(c.studentId);
   const left = daysLeft(c.endDate);
@@ -783,7 +824,7 @@ function contractCardHTML(c,idx=0){
       </div>
     </div>`;
 }
- 
+
 // ── PROGRESS ──
 let pFilter = 'all';
 function renderProgress() {
@@ -807,7 +848,7 @@ function renderProgress() {
     ${filterHTML}${cards}`;
 }
 function setPF(f){ pFilter=f; navigate('progress'); }
- 
+
 function progressCardHTML(c,idx=0){
   const student = getUser(c.studentId);
   const ls      = CACHE.lessons.filter(l=>l.studentId===c.studentId&&l.coachId===c.coachId);
@@ -844,7 +885,7 @@ function progressCardHTML(c,idx=0){
       </div>
     </div>`;
 }
- 
+
 // ── LESSONS PAGE ──
 let lStudentFilter = 'all';
 function renderLessonsPage() {
@@ -869,7 +910,7 @@ function renderLessonsPage() {
     ${filterHTML}${rows}`;
 }
 function setLF(f){ lStudentFilter=f; navigate('lessons'); }
- 
+
 function lessonRowHTML(l,idx=0,showSt=false){
   const isP = l.status==='present';
   const st  = getUser(l.studentId);
@@ -887,7 +928,7 @@ function lessonRowHTML(l,idx=0,showSt=false){
       </div>
     </div>`;
 }
- 
+
 // ── STUDENTS ──
 function renderStudents() {
   const u  = cu();
@@ -897,7 +938,7 @@ function renderStudents() {
     <div style="background:var(--surface);border:1px solid var(--border);border-radius:18px;padding:32px;margin-bottom:24px">
       ${renderInviteBox(u)}
     </div>${emptyHTML('Одоогоор сурагч бүртгэгдээгүй байна.\nДээрх кодыг сурагчдад өгнө үү.')}`;
- 
+
   const rows = ss.map((s,i)=>{
     const sc = CACHE.contracts.filter(c=>c.studentId===s.id);
     const sl = CACHE.lessons.filter(l=>l.studentId===s.id);
@@ -914,7 +955,7 @@ function renderStudents() {
         <td><button class="btn btn-sm btn-danger" onclick="event.stopPropagation();confirmDeleteStudent('${s.id}')">Устгах</button></td>
       </tr>`;
   }).join('');
- 
+
   return `
     <div class="page-hdr"><div><h2>Сурагчид</h2><p>${ss.length} сурагч</p></div></div>
     <div style="background:var(--surface);border:1px solid var(--border);border-radius:18px;padding:24px;margin-bottom:24px">
@@ -928,7 +969,7 @@ function renderStudents() {
       <tbody>${rows}</tbody>
     </table>`;
 }
- 
+
 function renderInviteBox(u){
   return `
     <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px">
@@ -943,7 +984,7 @@ function renderInviteBox(u){
       </div>
     </div>`;
 }
- 
+
 function copyCode(code){
   navigator.clipboard.writeText(code)
     .then(()=>toast('Код хуулагдлаа','info'))
@@ -954,7 +995,7 @@ function copyCode(code){
       toast('Код хуулагдлаа','info');
     });
 }
- 
+
 async function regenCode(){
   const u = cu();
   u.inviteCode = genCode();
@@ -963,7 +1004,7 @@ async function regenCode(){
   if(i>=0) CACHE.users[i] = u;
   toast('Шинэ код үүслээ','ok'); navigate('students');
 }
- 
+
 // ── STUDENT DETAIL ──
 function renderStudentDetail(sid){
   const s = getUser(sid);
@@ -1002,7 +1043,7 @@ function renderStudentDetail(sid){
       ${sorted.length?`<div class="lesson-list">${sorted.map((l,i)=>lessonRowHTML(l,i,false)).join('')}</div>`:emptyHTML('Хичээл байхгүй')}
     </div>`;
 }
- 
+
 // ── INVITE PAGE ──
 function renderInvite(){
   const u = cu();
@@ -1023,7 +1064,7 @@ function renderInvite(){
       </div>
     </div>`;
 }
- 
+
 // ══════════════════════════════════════════════════
 // MODALS: ADD/EDIT CONTRACT
 // ══════════════════════════════════════════════════
@@ -1047,7 +1088,7 @@ function openAddContract(preStudentId=''){
       </div>
     </div>`);
 }
- 
+
 async function doAddContract(){
   const u   = cu();
   const sid = document.getElementById('fc-s').value;
@@ -1062,7 +1103,7 @@ async function doAddContract(){
   CACHE.contracts.unshift(c);
   closeModal(); toast('Гэрээ нэмэгдлээ','ok'); navigate(page);
 }
- 
+
 function openEditContract(cid){
   const c = CACHE.contracts.find(x=>x.id===cid);
   if(!c) return;
@@ -1088,7 +1129,7 @@ function openEditContract(cid){
       </div>
     </div>`);
 }
- 
+
 async function doEditContract(cid){
   const i = CACHE.contracts.findIndex(x=>x.id===cid);
   if(i<0) return;
@@ -1100,7 +1141,7 @@ async function doEditContract(cid){
   await apiUpdateContract(CACHE.contracts[i]);
   closeModal(); toast('Гэрээ засагдлаа','ok'); navigate(page);
 }
- 
+
 function confirmCancel(cid){
   showModal(`
     <div class="modal confirm-modal">
@@ -1113,7 +1154,7 @@ function confirmCancel(cid){
       </div>
     </div>`);
 }
- 
+
 async function doCancel(cid){
   const i = CACHE.contracts.findIndex(x=>x.id===cid);
   if(i>=0){
@@ -1122,7 +1163,7 @@ async function doCancel(cid){
   }
   closeModal(); toast('Гэрээ цуцлагдлаа','ok'); navigate(page);
 }
- 
+
 // ══════════════════════════════════════════════════
 // MODALS: ADD LESSON
 // ══════════════════════════════════════════════════
@@ -1152,7 +1193,7 @@ function openAddLesson(preStudentId=''){
       </div>
     </div>`);
 }
- 
+
 async function doAddLesson(){
   const u      = cu();
   const sid    = document.getElementById('fl-s').value;
@@ -1173,7 +1214,7 @@ async function doAddLesson(){
   }
   closeModal(); toast('Хичээл бүртгэгдлээ','ok'); navigate(page);
 }
- 
+
 // ══════════════════════════════════════════════════
 // DELETE STUDENT
 // ══════════════════════════════════════════════════
@@ -1191,7 +1232,7 @@ function confirmDeleteStudent(sid){
       </div>
     </div>`);
 }
- 
+
 async function doDeleteStudent(sid){
   await apiDeleteUser(sid);
   await apiDeleteContractsByStudent(sid);
@@ -1203,14 +1244,14 @@ async function doDeleteStudent(sid){
   if(subData.studentId===sid) navigate('students');
   else navigate(page);
 }
- 
+
 // ══════════════════════════════════════════════════
 // HELPERS
 // ══════════════════════════════════════════════════
 function emptyHTML(text){
   return `<div class="empty"><div class="empty-icon">⛳</div><div class="empty-text">${text.replace(/\n/g,'<br>')}</div></div>`;
 }
- 
+
 // ══════════════════════════════════════════════════
 // INIT — IndexedDB нээж, cache дүүргэж, session шалгана
 // ══════════════════════════════════════════════════
@@ -1241,7 +1282,7 @@ async function init(){
       </div>`;
   }
 }
- 
+
 init();
 </script>
 </body>
