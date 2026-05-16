@@ -219,9 +219,9 @@ const db = {
   lessons:   { get: ()=>sb.from('lessons').select('*'),
                upsert: r=>sb.from('lessons').upsert(r),
                delByStudent: sid=>sb.from('lessons').delete().eq('student_id',sid) },
-  sessions:  { get: ()=>sb.from('sessions').select('*').eq('key','current').single(),
-               set: uid=>sb.from('sessions').upsert({key:'current',user_id:uid}),
-               clear: ()=>sb.from('sessions').delete().eq('key','current') }
+  sessions:  { get: ()=>{ const k=localStorage.getItem('ga_sid'); return {data:k?{user_id:k}:null}; },
+               set: uid=>{ localStorage.setItem('ga_sid',uid); return Promise.resolve(); },
+               clear: ()=>{ localStorage.removeItem('ga_sid'); return Promise.resolve(); } }
 };
 
 // ══════════ CACHE ══════════
